@@ -1,0 +1,27 @@
+# Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+*.o
+*.a
+*.mod
+*.mod~
+*.modsum
+*.modsum~
+*.info
+*.info~
+*.zip
+*.tar.gz
+*.tar.xz
+
+# IDE/Editor folders and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.bak
