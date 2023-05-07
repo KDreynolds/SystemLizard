@@ -3,6 +3,7 @@ package main
 import (
 	"strings"
 	"time"
+	"fmt"
 
 	"github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
@@ -10,7 +11,24 @@ import (
 	"github.com/shirou/gopsutil/v3/disk"
 	"github.com/shirou/gopsutil/v3/host"
 	"github.com/shirou/gopsutil/v3/mem"
+	"github.com/shirou/gopsutil/v3/net"
 )
+
+func getListeningPorts() string {
+    conns, err := net.Connections("tcp")
+    if err != nil {
+        return fmt.Sprintf("Error fetching listening ports: %v", err)
+    }
+
+    var listeningPorts []string
+    for _, conn := range conns {
+        if conn.Status == "LISTEN" {
+            listeningPorts = append(listeningPorts, fmt.Sprintf("%d", conn.Laddr.Port))
+        }
+    }
+    return strings.Join(listeningPorts, ", ")
+}
+
 
 func printStats() (int, int, int) {
 	// Get CPU usage
@@ -83,7 +101,7 @@ func main() {
 
 	cpuTempChart := widgets.NewPlot()
 	cpuTempChart.Title = " CPU Temperature "
-	cpuTempChart.SetRect(0, 18, 80, 40)
+	cpuTempChart.SetRect(0, 23, 80, 40)
 	cpuTempChart.BorderStyle.Fg = termui.ColorGreen
 	cpuTempChart.TitleStyle.Fg = termui.ColorWhite
 	cpuTempChart.LineColors[0] = termui.ColorBlue
@@ -99,6 +117,15 @@ func main() {
 	title.TitleStyle.Fg = termui.ColorGreen
 	title.TextStyle.Fg = termui.ColorWhite
 	title.Border = true
+
+	listeningPortsText := widgets.NewParagraph()
+	listeningPortsText.Title = " Listening Ports "
+	listeningPortsText.SetRect(0, 18, 80, 23)
+	listeningPortsText.BorderStyle.Fg = termui.ColorGreen
+	listeningPortsText.TitleStyle.Fg = termui.ColorWhite
+	listeningPortsText.TextStyle.Fg = termui.ColorWhite
+	listeningPortsText.Border = true
+
 
 	uiEvents := termui.PollEvents()
 	ticker := time.NewTicker(5 * time.Second)
@@ -117,6 +144,8 @@ func main() {
 			cpuGauge.Percent = cpuUsage
 			memGauge.Percent = memUsage
 			diskGauge.Percent = diskUsage
+			listeningPorts := getListeningPorts()
+    		listeningPortsText.Text = listeningPorts
 
 			cpuTemp := getCPUTemperature()
 			cpuTempChart.Data[0] = append(cpuTempChart.Data[0], cpuTemp)
@@ -124,7 +153,8 @@ func main() {
 				cpuTempChart.Data[0] = cpuTempChart.Data[0][1:]
 			}
 
-			termui.Render(title, cpuGauge, memGauge, diskGauge, cpuTempChart)
+			termui.Render(title, cpuGauge, memGauge, diskGauge, cpuTempChart, listeningPortsText)
+
 		}
 	}
 }
