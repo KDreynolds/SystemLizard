@@ -63,7 +63,7 @@ func main() {
 	cpuGauge.Percent = 0
 	cpuGauge.BarColor = termui.ColorBlue
 	cpuGauge.BorderStyle.Fg = termui.ColorGreen
-	cpuGauge.TitleStyle.Fg = termui.ColorGreen
+	cpuGauge.TitleStyle.Fg = termui.ColorWhite
 
 	memGauge := widgets.NewGauge()
 	memGauge.Title = " Memory Usage "
@@ -71,7 +71,7 @@ func main() {
 	memGauge.Percent = 0
 	memGauge.BarColor = termui.ColorBlue
 	memGauge.BorderStyle.Fg = termui.ColorGreen
-	memGauge.TitleStyle.Fg = termui.ColorGreen
+	memGauge.TitleStyle.Fg = termui.ColorWhite
 
 	diskGauge := widgets.NewGauge()
 	diskGauge.Title = " Disk Usage "
@@ -79,13 +79,13 @@ func main() {
 	diskGauge.Percent = 0
 	diskGauge.BarColor = termui.ColorBlue
 	diskGauge.BorderStyle.Fg = termui.ColorGreen
-	diskGauge.TitleStyle.Fg = termui.ColorGreen
+	diskGauge.TitleStyle.Fg = termui.ColorWhite
 
 	cpuTempChart := widgets.NewPlot()
 	cpuTempChart.Title = " CPU Temperature "
 	cpuTempChart.SetRect(0, 18, 80, 40)
 	cpuTempChart.BorderStyle.Fg = termui.ColorGreen
-	cpuTempChart.TitleStyle.Fg = termui.ColorGreen
+	cpuTempChart.TitleStyle.Fg = termui.ColorWhite
 	cpuTempChart.LineColors[0] = termui.ColorBlue
 	cpuTempChart.AxesColor = termui.ColorGreen
 	cpuTempChart.Marker = widgets.MarkerDot
@@ -97,7 +97,7 @@ func main() {
 	title.SetRect(0, 0, 80, 3)
 	title.BorderStyle.Fg = termui.ColorGreen
 	title.TitleStyle.Fg = termui.ColorGreen
-	title.TextStyle.Fg = termui.ColorGreen
+	title.TextStyle.Fg = termui.ColorWhite
 	title.Border = true
 
 	uiEvents := termui.PollEvents()
